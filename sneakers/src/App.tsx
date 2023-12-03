@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Space, Table, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import Artem from './page/Artem';
+import { Route } from 'react-router-dom';
+import Vlad from './page/Vlad';
+import { ARTEM_ROUTE, VLAD_ROUTE } from './app/routing/config';
+import MainRouter from './app/routing';
+import { Link } from 'react-router-dom';
 
 interface DataType {
   country: string;
@@ -92,11 +98,24 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Table dataSource={dataSource} columns={columns} pagination={false} />
+
+      {/* <Table dataSource={dataSource} columns={columns} pagination={false} />
       <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
         Назад
       </Button>
-      <Button onClick={() => setPage(page + 1)}>Вперед</Button>
+      <Button onClick={() => setPage(page + 1)}>Вперед</Button> */}
+
+      <Link to={ARTEM_ROUTE}>Открыть Артема</Link>
+      <Link to={VLAD_ROUTE}>Открыть Влада</Link>
+
+    <MainRouter/>  
+    {/* <Route> 
+      <Route path = 'Artem' element={<Artem/>}/>
+      <Route path='Vlad' element={<Vlad/>}/>
+    </Route> */}
+
+      
+    
     </>
   );
 };
