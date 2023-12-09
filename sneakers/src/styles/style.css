@@ -1,0 +1,26 @@
+.route{
+    padding: 30px 100px 100px 100px ;
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+}
+.routeLink{
+    color: #1b1a1a;
+    text-decoration: none;
+}
+.routeLink:hover{
+    color: #595555;
+}
+.heading{
+    display: flex;
+    justify-content: center;
+    color: #1b1a1a;
+}
+.btnAuto{
+    width: 100px;
+    height: 28px;
+    background-color: black;
+    color: aliceblue;
+    border-radius: 25px;
+    cursor: pointer;
+}
