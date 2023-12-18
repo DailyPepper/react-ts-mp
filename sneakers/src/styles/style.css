@@ -5,16 +5,15 @@
     justify-content: center;
 }
 .routeLink{
-    color: #1b1a1a;
+    color: #d49415;
     text-decoration: none;
-}
+} 
 .routeLink:hover{
     color: #595555;
 }
 .heading{
     display: flex;
     justify-content: center;
-    color: #1b1a1a;
 }
 .btnAuto{
     width: 100px;
@@ -23,4 +22,8 @@
     color: aliceblue;
     border-radius: 25px;
     cursor: pointer;
+} 
+.blockStyle{
+    display: flex;
+    gap: 40px;
 }

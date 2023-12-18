@@ -38,7 +38,7 @@ const Sneakers = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
+  };  
 
   useEffect(() => {
     getUniversity(page, 5);
