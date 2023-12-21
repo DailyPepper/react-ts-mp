@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 import { createContext, useEffect, useState, useContext, ReactNode } from 'react';
 import sun from '../../img/sun.svg' 
 import moon from '../../img/moon.svg'
-
-// Стили
+import { GlobalStyles } from '../../styles/global-styled';
 
 interface StyleProps {
     height?: string
@@ -24,18 +23,19 @@ const NavbarWrapper = styled.div<StyleProps>`
     border-radius: 25px;
 `
 
-const ButtonOnOffStyled = styled.button`
+const SwitchThemeStyled = styled.button`
     width: 100px;
     height: 40px;
     border-radius: 20px;
     background: none;
+    color: #fff;
     border-style: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     background-image: url(${sun});
-    background-size: contain;
+    background-size: contain; /* Настройки размера изображения */
     background-repeat: no-repeat;
     background-position: center;
 `
@@ -85,34 +85,31 @@ type AuthContextType = {
 
 // Функция темы светлая/темная
 
-function ButtonOnOff(){
-    const [button, setButton] = useState('light')
-    const [backgroundImage, setBackgroundImage] = useState(sun);
+function SwitchTheme() {
+  const [theme, setTheme] = useState<"light" | "dark">('light');
+  const [backgroundImage, setBackgroundImage] = useState(sun);
 
-    const handleClick = () => {
-        setButton(button === 'light' ? 'dark' : 'light');
-        setBackgroundImage((prevImage) => prevImage === sun ? moon : sun);
-    }
+  const handleClick = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    const newBackgroundImage = newTheme === 'light' ? sun : moon;
 
-    useEffect(() => {
-        if (button === 'light') {
-          document.body.style.backgroundColor = 'white';
-          document.body.style.color = '#171819f2'
-        } else {
-          document.body.style.backgroundColor = '#171819f2';
-          document.body.style.color = 'white'
-        }
-    }, [button]);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    setTheme(newTheme);
+    setBackgroundImage(newBackgroundImage);
+  }
 
-    return (
-        <ButtonOnOffStyled onClick={handleClick} style={{ backgroundImage: `url(${backgroundImage})` }}>
-            {button === 'light'}
-        </ButtonOnOffStyled>
-    );
+  return (
+    <SwitchThemeStyled onClick={handleClick} style={{ backgroundImage: `url(${backgroundImage})` }}>
+      {theme === 'light'}
+    </SwitchThemeStyled>
+  );
 }
+
 
 const navbar = () => {
     return ( 
+      <>
+        <GlobalStyles />
         <AuthProvider>
             <NavbarWrapper height='65px'>
                     <Link to={SNEAKERS_ROUTE} className='routeLink'>Каталог товаров</Link>
@@ -121,10 +118,11 @@ const navbar = () => {
                     <Link to={ACCOUNT_ROUTE} className='routeLink'>Аккаунт</Link>
                     <div className='blockStyle'>
                         <AuthButton/> 
-                        <ButtonOnOff/>     
+                        <SwitchTheme/>     
                     </div>                
             </NavbarWrapper>
         </AuthProvider>
+      </> 
      );
 }
 export default navbar;
