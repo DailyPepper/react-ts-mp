@@ -2,10 +2,12 @@ import styled from 'styled-components';
 import { CONTACT_ROUTE, NEWS_ROUTE, ACCOUNT_ROUTE, SNEAKERS_ROUTE } from '../../app/routing/config';
 import '../../styles/style.css';
 import { Link } from 'react-router-dom';
-import { createContext, useEffect, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext} from 'react';
 import sun from '../../img/sun.svg' 
 import moon from '../../img/moon.svg'
 import { GlobalStyles } from '../../styles/global-styled';
+
+
 
 interface StyleProps {
     height?: string
@@ -28,16 +30,19 @@ const SwitchThemeStyled = styled.button`
     height: 40px;
     border-radius: 20px;
     background: none;
-    color: #fff;
     border-style: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     background-image: url(${sun});
-    background-size: contain; /* Настройки размера изображения */
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    transition: background-color 0.5s;
+    &:hover{
+      filter: grayscale(80%) sepia(20%);
+    }
 `
 const AuthButtonStyle = styled.button`
     width: 100px;
@@ -47,38 +52,53 @@ const AuthButtonStyle = styled.button`
     color: #fff;
     border-style: none;
     cursor: pointer;
+    transition: background-color 0.4s;
+    &:hover{
+      background-color: #595555;;
+    }
 `
 
 // Функция войти/выйти
 
 type AuthContextType = {
     isAuthenticated: boolean;
-    toggleAuth: () => void;
+    login: () => void;
+    logout: () => void;
   };
-  
+
   export const AuthContext = createContext<AuthContextType | null>(null);
+
+  export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
-  export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-    const toggleAuth = () => {
-      setIsAuthenticated(prevState => !prevState);
+    // const toggleAuth = () => {
+    //   // setIsAuthenticated(prevState => !prevState);
+    // };
+    const login = () => {
+      setIsAuthenticated(true);
     };
   
+    const logout = () => {
+      setIsAuthenticated(false);
+    };
     return (
-      <AuthContext.Provider value={{ isAuthenticated, toggleAuth }}>
+      <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
         {children}
       </AuthContext.Provider>
     );
   };
-  
+
+  export const useAuth = () => {
+    return useContext(AuthContext);
+  };
+
   export const AuthButton: React.FC = () => {
     const auth = useContext(AuthContext);
   
     return (
-      <AuthButtonStyle onClick={auth?.toggleAuth}>
+      <AuthButtonStyle onClick={auth?.isAuthenticated ? auth?.logout : auth?.login}>
         {auth?.isAuthenticated ? "Выйти" : "Войти"}
-      </AuthButtonStyle>
+      </AuthButtonStyle>  
     );
   };
 

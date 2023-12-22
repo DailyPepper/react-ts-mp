@@ -7,6 +7,7 @@
 .routeLink{
     color: #d49415;
     text-decoration: none;
+    transition: color 0.3s;
 } 
 .routeLink:hover{
     color: #595555;
