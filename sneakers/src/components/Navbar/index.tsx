@@ -2,17 +2,17 @@ import styled from 'styled-components';
 import { CONTACT_ROUTE, NEWS_ROUTE, ACCOUNT_ROUTE, SNEAKERS_ROUTE } from '../../app/routing/config';
 import '../../styles/style.css';
 import { Link } from 'react-router-dom';
-import { createContext, useState, useContext} from 'react';
+import React ,{ createContext, useState, useContext} from 'react';
 import sun from '../../img/sun.svg' 
 import moon from '../../img/moon.svg'
 import { GlobalStyles } from '../../styles/global-styled';
+import RegistrationModal from './RegistrationModal';
 
 
 
 interface StyleProps {
     height?: string
 }
-
 
 const NavbarWrapper = styled.div<StyleProps>`
     border: 1.5px solid #d49415;
@@ -66,6 +66,7 @@ type AuthContextType = {
     logout: () => void;
   };
 
+
   export const AuthContext = createContext<AuthContextType | null>(null);
 
   export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -94,7 +95,7 @@ type AuthContextType = {
 
   export const AuthButton: React.FC = () => {
     const auth = useContext(AuthContext);
-  
+  // onClick={auth?.isAuthenticated ? auth?.logout : auth?.login}
     return (
       <AuthButtonStyle onClick={auth?.isAuthenticated ? auth?.logout : auth?.login}>
         {auth?.isAuthenticated ? "Выйти" : "Войти"}
