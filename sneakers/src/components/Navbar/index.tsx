@@ -95,7 +95,7 @@ type AuthContextType = {
 
   export const AuthButton: React.FC = () => {
     const auth = useContext(AuthContext);
-  // onClick={auth?.isAuthenticated ? auth?.logout : auth?.login}
+
     return (
       <AuthButtonStyle onClick={auth?.isAuthenticated ? auth?.logout : auth?.login}>
         {auth?.isAuthenticated ? "Выйти" : "Войти"}
