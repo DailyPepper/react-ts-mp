@@ -1,12 +1,12 @@
 import React from "react";
 import "../../styles/style.css"
+import DinamicPagination from "../../components/DynamicPagination";
 
 const News = () => {
     return ( 
         <>
-        <h1 className="heading">
-            Страница новостей
-        </h1>
+            <DinamicPagination>  
+            </DinamicPagination>
         </>
      );
 }
