@@ -2,10 +2,10 @@ import { FC } from "react";
 import { IUniversity } from "../DynamicPagination/university.interface";
 import { styled } from "styled-components";
 
-const CardStyled = styled.div`
+const CardStyled = styled.li`
     height: 50px;
-    background-color: #888888;
-    color: #bb5a5a;
+    color: #e6df4f;
+    list-style-type: auto;
 `
 
 const CardUniversity: FC <{data: IUniversity}> = ({data}) => (

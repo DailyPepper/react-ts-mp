@@ -34,7 +34,7 @@ const MyDocument: React.FC<Props> = ({name, picture}) => {
                     <Text>Section #2</Text>
                 </View>
                 <View style={styles.section}>
-                  {picture && <Image src={picture}/>}
+                  {/* {picture && <Image src={picture}/>} */}
                 </View>
                </Page>
             </Document> 

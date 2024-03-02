@@ -5,12 +5,16 @@ import axios from "axios";
 import { useInView } from "react-intersection-observer";
 import { styled } from "styled-components";
 
-const LIMIT_UNIVERSITIES = 15
+const LIMIT_UNIVERSITIES = 20
 
 const BlockOnserver = styled.div`
     height: 40px;
     background-color: black;
-
+`
+const SectionList = styled.section`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
 
 const DinamicPagination: FC = () => {
@@ -46,7 +50,7 @@ const DinamicPagination: FC = () => {
         }
     }, [inView])
     return ( 
-        <>  
+        <SectionList> 
             <h1>
                 List Univers
             </h1>
@@ -57,7 +61,7 @@ const DinamicPagination: FC = () => {
             }
             {loading && <div>Loading...</div>}
             {!loading && <BlockOnserver ref={ref}></BlockOnserver>}
-        </>
+        </SectionList>
      );
 }
  
