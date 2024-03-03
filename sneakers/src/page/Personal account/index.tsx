@@ -14,33 +14,33 @@ const FormStyle = styled.form`
 
 
 interface IMyForm {
-   picture: File;
-   name: string;
+  picture: File;
+  name: string;
 }
 
 interface Props { 
-   name: string;
-   picture: File;
+  name: string;
+  picture: File;
 }
 
-const MyDocument: React.FC<Props> = ({name, picture}) => {
-   return (
-            <Document>
-               <Page size="A4" style={styles.page}>
-                <View style={styles.section}>
-                    <Text>{name}</Text>
-                </View>
-                <View style={styles.section}>
-                    <Text>Section #2</Text>
-                </View>
-                <View style={styles.section}>
-                  {/* {picture && <Image src={picture}/>} */}
-                </View>
-               </Page>
-            </Document> 
-   )
+const MyDocument: React.FC<Props> = ({ name, picture }) => {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.section}>
+          <Text>{name}</Text>
+        </View>
+        <View style={styles.section}>
+          <Text>Section #2</Text>
+        </View>
+        <View style={styles.section}>
+          {picture && <Image source={picture}/>}
+        </View>
+      </Page>
+    </Document>
+  );
+};
 
-}
 
 const styles = StyleSheet.create({
    page: {
