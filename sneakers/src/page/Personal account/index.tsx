@@ -53,8 +53,7 @@ const styles = StyleSheet.create({
      flexGrow: 1
    },
    img:{
-    padding: 15,
-    flexGrow: 1
+    margin: 30,
    }
  });
 
@@ -70,14 +69,12 @@ const Account = () => {
       register,
       handleSubmit,
       formState: { errors },
-      reset
     } = useForm<IMyForm>({
       mode: "onBlur",
     })
   
     const saveElement = (data: IMyForm) => {
       setTasks(data)
-      reset();
     }
 
     return ( 
@@ -92,6 +89,7 @@ const Account = () => {
               }
             }
             )}
+            placeholder="Введите имя"
           />
           <input 
             type="file" 
@@ -100,14 +98,13 @@ const Account = () => {
               required: "Изображение",
             }
             )}
-            
           />
           {/* <div>{errors.name?.message}</div> */}
           <button type="submit" >Сохранить</button>
         </FormStyle>
 
         {
-          !!task?.name && 
+          task?.name && task?.picture &&
           <PDFDownloadLink document={<MyDocument name={task.name} picture={task.picture[0]}/>} fileName="lab_pdf.pdf">
             {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}
           </PDFDownloadLink>
