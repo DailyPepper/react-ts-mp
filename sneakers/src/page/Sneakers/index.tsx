@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Table, Button } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Table, Button } from "antd";
+import type { ColumnsType } from "antd/es/table";
 
 interface DataType {
   country: string;
@@ -11,19 +11,19 @@ interface DataType {
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'Страна',
-    dataIndex: 'country',
-    key: 'country',
+    title: "Страна",
+    dataIndex: "country",
+    key: "country",
   },
   {
-    title: 'Название школы',
-    dataIndex: 'name',
-    key: 'name',
+    title: "Название школы",
+    dataIndex: "name",
+    key: "name",
   },
   {
-    title: 'Название города',
-    dataIndex: 'house',
-    key: 'house',
+    title: "Название города",
+    dataIndex: "house",
+    key: "house",
   },
 ];
 
@@ -33,12 +33,14 @@ const Sneakers = () => {
 
   const getUniversity = async (page: number, limit: number) => {
     try {
-      const response = await axios.get(`http://universities.hipolabs.com/search?offset=${(page - 1) * limit}&limit=${limit}`);
+      const response = await axios.get(
+        `http://universities.hipolabs.com/search?offset=${(page - 1) * limit}&limit=${limit}`,
+      );
       setDataSource(response.data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
-  };  
+  };
 
   useEffect(() => {
     getUniversity(page, 5);
@@ -53,6 +55,6 @@ const Sneakers = () => {
       <Button onClick={() => setPage(page + 1)}>Вперед</Button>
     </>
   );
-}
+};
 
 export default Sneakers;

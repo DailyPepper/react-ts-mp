@@ -1,14 +1,14 @@
-import MainRouter from './app/routing';
-import './styles/style.css';
-import Navbar from './components/Navbar';
+import MainRouter from "./app/routing";
+import "./styles/style.css";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <MainRouter />
     </>
   );
-}
+};
 
 export default App;
