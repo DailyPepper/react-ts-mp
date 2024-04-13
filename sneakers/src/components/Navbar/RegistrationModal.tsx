@@ -107,6 +107,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose }
                 <div className="form-group">
                   <label htmlFor="username">Имя пользователя:</label>
                   <input
+                    data-testid={"input-username"}
                     type="text"
                     id="username"
                     name="username"
@@ -117,6 +118,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose }
                 <div className="form-group">
                   <label htmlFor="password">Пароль:</label>
                   <input
+                    data-testid={"input-password"}
                     type="password"
                     id="password"
                     name="password"
@@ -124,7 +126,7 @@ const RegistrationModal: React.FC<RegistrationModalProps> = ({ isOpen, onClose }
                     onChange={handleChange}
                   />
                 </div>
-                <button type="submit">Зарегистрироваться</button>
+                <button type="submit" >Зарегистрироваться</button>
               </form>
             </div>
           </div>
