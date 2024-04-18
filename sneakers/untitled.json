@@ -1,0 +1,437 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+      "title": "Data Transfer Gateway API",
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3994/api"
+      }
+    ],
+    "paths": {
+      "/v1/transfer/task_get": {
+        "get": {
+          "tags": [
+            "transfer"
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "serviceStatus": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "header": {
+                            "type": "string",
+                            "example": "Успешно"
+                          },
+                          "message": {
+                            "type": "string",
+                            "example": "Операция выполнена успешно"
+                          }
+                        }
+                      },
+                      "payload": {
+                        "type": "object",
+                        "properties": {
+                          "frameUUID": {
+                            "type": "string",
+                            "example": "frameUUID"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "Result get task for download archive"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "serviceStatus": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "number",
+                            "example": 1212
+                          },
+                          "header": {
+                            "type": "string",
+                            "example": "Ошибка"
+                          },
+                          "message": {
+                            "type": "string",
+                            "example": ""
+                          }
+                        }
+                      },
+                      "payload": {
+                        "type": "object",
+                        "properties": {
+                          "errorMessage": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "data": {
+                            "type": "object",
+                            "example": {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "Result get task for download archive"
+            }
+          },
+          "summary": "Получение задачи для скачивания архива",
+          "servers": [
+            {
+              "url": "http://localhost:3994/api"
+            }
+          ]
+        }
+      },
+      "/v1/transfer/task_done": {
+        "put": {
+          "tags": [
+            "transfer"
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "serviceStatus": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "header": {
+                            "type": "string",
+                            "example": "Успешно"
+                          },
+                          "message": {
+                            "type": "string",
+                            "example": "Операция выполнена успешно"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "Result task done"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "serviceStatus": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "number",
+                            "example": 1212
+                          },
+                          "header": {
+                            "type": "string",
+                            "example": "Ошибка"
+                          },
+                          "message": {
+                            "type": "string",
+                            "example": ""
+                          }
+                        }
+                      },
+                      "payload": {
+                        "type": "object",
+                        "properties": {
+                          "errorMessage": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "data": {
+                            "type": "object",
+                            "example": {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "Result task done"
+            }
+          },
+          "summary": "Смена статуса задачи по скачиванию архива",
+          "servers": [
+            {
+              "url": "http://localhost:3994/api"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "frameUUID": {
+                      "type": "string",
+                      "description": "frameUUID"
+                    }
+                  },
+                  "required": [
+                    "frameUUID"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v1/transfer_archive/download/{archiveId}": {
+        "get": {
+          "tags": [
+            "transfer_archive"
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "serviceStatus": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "number",
+                            "example": 0
+                          },
+                          "header": {
+                            "type": "string",
+                            "example": "Успешно"
+                          },
+                          "message": {
+                            "type": "string",
+                            "example": "Операция выполнена успешно"
+                          }
+                        }
+                      },
+                      "payload": {
+                        "type": "string",
+                        "description": "archiveId"
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "Result archive download"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "serviceStatus": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "number",
+                            "example": 1212
+                          },
+                          "header": {
+                            "type": "string",
+                            "example": "Ошибка"
+                          },
+                          "message": {
+                            "type": "string",
+                            "example": ""
+                          }
+                        }
+                      },
+                      "payload": {
+                        "type": "object",
+                        "properties": {
+                          "errorMessage": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "data": {
+                            "type": "object",
+                            "example": {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "Result archive download"
+            }
+          },
+          "summary": "Скачивание архива",
+          "servers": [
+            {
+              "url": "http://localhost:3994/api"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "archiveId",
+              "in": "path",
+              "description": "Идентификатор архива",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Идентификатор архива"
+              }
+            }
+          ]
+        }
+      },
+      "/v1/transfer_archive/upload/{processTrackingUUID}": {
+        "post": {
+          "tags": [
+            "transfer_archive"
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "examples": {
+                    "success": {
+                      "summary": "Успешная загрузка архива",
+                      "value": {
+                        "serviceStatus": {
+                          "code": 0,
+                          "header": "Успешно",
+                          "message": "Операция выполнена успешно"
+                        }
+                      }
+                    },
+                    "error": {
+                      "summary": "Ошибка при загрузке архива",
+                      "value": {
+                        "serviceStatus": {
+                          "code": 1209,
+                          "header": "Ошибка",
+                          "message": "Не удалось загрузить файл"
+                        },
+                        "info": {
+                          "error": "Process 235 not found"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "Result archive upload"
+            },
+            "500": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "serviceStatus": {
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "type": "number",
+                            "example": 1209
+                          },
+                          "header": {
+                            "type": "string",
+                            "example": "Ошибка"
+                          },
+                          "message": {
+                            "type": "string",
+                            "example": ""
+                          }
+                        }
+                      },
+                      "payload": {
+                        "type": "object",
+                        "properties": {
+                          "errorMessage": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "data": {
+                            "type": "object",
+                            "example": {}
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "description": "Result archive upload"
+            }
+          },
+          "summary": "Загрузка архива в систему",
+          "servers": [
+            {
+              "url": "http://localhost:3994/api"
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "Файл архива в бинарном виде, с content-type multipart/form-data."
+                    }
+                  },
+                  "required": [
+                    "file"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+              "name": "processTrackingUUID",
+              "in": "path",
+              "description": "Uuid полученный от process_transfer_archive",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Uuid полученный от process_transfer_archive"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
