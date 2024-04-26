@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -23,7 +24,8 @@ const FormStyle = styled.div`
         color: white;
         border-radius: 5px;
         font-size: 15px;
-    }::placeholder{
+    }
+    ::placeholder{
         color: white;
         font-size: 15px;
     }
@@ -41,32 +43,53 @@ const FormStyle = styled.div`
         transition: background-color 0.5s;        
         background-color: #ffa600;
     }
-    
-`
+`;
 
-interface IMyForm { 
+interface IMyForm {
+    token: any;
+    exists: boolean; 
     name: string; 
-    age: number; 
-    number: number;
-  } 
-   
-   
-  export const Contact = () => { 
-    const [tasks, setTasks] = useState<IMyForm[]>([]) 
-    const saveElement: SubmitHandler<IMyForm> = data => { 
-      // здесь мы передаём новый массив, который содержит все старые элементы и новый 
-      // ...prev - мы получаем все элементы текущего стэйте (с помощью spread оператора) 
-          setTasks((prev) => [...prev, data]) 
-          reset(); 
-      } 
-    const { 
-      register, // метод для регистрации вашего инпута, для дальнейшей работы с ним 
-      handleSubmit, // метод для получения данных формы, если валидация прошла успешна 
-      formState: {errors, isValid}, // errors - список ошибок валидации для всех полей формы 
-      reset // метод для очистки полей формы 
-    } = useForm<IMyForm>({ 
-        mode: "onBlur", // парметр onBlur - отвечает за запуск валидации при не активном состоянии поля 
-    }) 
+    pass: string; 
+} 
+
+export const Contact = () => { 
+    const [tasks, setTasks] = useState<IMyForm[]>([]);
+    const [userName, setUserName] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const { register, handleSubmit, formState: { errors, isValid }, reset, setError } = useForm<IMyForm>({ 
+        mode: "onBlur",
+    });
+
+    const saveElement: SubmitHandler<IMyForm> = (data) => { 
+        setTasks((prev) => [...prev, data]);
+        reset();
+    };
+
+    // const checkAccount = async () => {
+    //     try {
+    //         const apiUrl = "http://0.0.0.0:8000";
+    //         const tokenEndpoint = "/swagger/auth/token";
+    //         const url = `${apiUrl}${tokenEndpoint}`;
+    //         const response = await axios.post(url, {
+    //             userName,
+    //             password,
+                
+    //         });
+    //         console.log(response.data);
+    //         const data: IMyForm = response.data;
+    //         if (data.token) {
+    //             localStorage.setItem('accessToken', data.token);
+    //             window.location.href = '/main-page'; // Редирект на главную страницу
+    //         } else {
+    //             setError('auth', {
+    //                 type: 'manual',
+    //                 message: 'Пользователь не существует',
+    //             }); // Отобразить ошибку на форме
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     return ( 
         <>
@@ -74,63 +97,28 @@ interface IMyForm {
                 <h1>
                     Заполните форму
                 </h1>
-                <form onSubmit={handleSubmit(saveElement)} className="form__style"> 
+                <form onSubmit={handleSubmit(saveElement)} className="form__style" > 
                     <input 
+                        type="name"
                         className="input__style"
-                        placeholder=" Имя"
-                        {...register('name', { 
-                                required: "Поле обязательно для заполнения", 
-                                minLength: { 
-                                    value: 2, 
-                                    message: "Нужно больше символов Данил, нужно более 5 символов" 
-                                },
-                                maxLength: {
-                                    value: 15,
-                                    message: "Много текста"
-                                } 
-                            } 
-                        )} 
+                        placeholder="Имя"
+                        onChange={(e)=>setUserName(e.target.value)}
                     /> 
                     <div>{errors.name?.message}</div> 
                     <input  
+                        type="pass"
                         className="input__style"
-                        placeholder=" Возраст"
-                        {...register('age', { 
-                                required: "Поле обязательно для заполнения", 
-                                minLength: { 
-                                    value: 1, 
-                                    message: "Нужно больше символов Данил, нужно более 10 символов" 
-                                },
-                                maxLength: {
-                                    value: 3,
-                                    message: "Много текста"
-                                } 
-                            } 
-                        )} 
+                        placeholder="Пароль"
+                        onChange={(e)=> setPassword(e.target.value)}
                     /> 
-                    <div>{errors.age?.message}</div> 
-                    <input  
-                        className="input__style"
-                        placeholder=" Номер телефона"
-                        {...register('number', { 
-                                required: "Поле обязательно для заполнения", 
-                                minLength: { 
-                                    value: 5, 
-                                    message: "Нужно больше символов Данил, нужно более 10 символов" 
-                                },
-                                maxLength: {
-                                    value: 20,
-                                    message: "Много текста"
-                                } 
-                            } 
-                        )} 
-                    /> 
-                    <div>{errors.age?.message}</div> 
-                    <button type="submit" disabled={!isValid} className="button__style">Сохранить</button> 
+                    <div>{errors.pass?.message}</div> 
+                    <button type="submit" disabled={!isValid} className="button__style" >
+                        Сохранить
+                    </button> 
                     { 
-                        tasks.map((task) => 
-                            <p> 
-                                Вывод : {task.name} - {task.age} - {task.number}
+                        tasks.map((task, index) => 
+                            <p key={index}> 
+                                Вывод : {task.name} - {task.pass} 
                             </p> 
                         ) 
                     } 
@@ -138,6 +126,6 @@ interface IMyForm {
             </FormStyle>
         </>
     ); 
-  };
- 
+};
+
 export default Contact;
