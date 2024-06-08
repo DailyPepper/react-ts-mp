@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
+import { AuthContext } from "../../components/Navbar";
 
 const FormStyle = styled.div`
     padding: 20px 50px 50px 20px;
@@ -24,6 +25,7 @@ const FormStyle = styled.div`
         color: white;
         border-radius: 5px;
         font-size: 15px;
+        outline: none;
     }
     ::placeholder{
         color: white;
@@ -52,80 +54,81 @@ interface IMyForm {
     pass: string; 
 } 
 
-export const Contact = () => { 
+const Contact = () => {
     const [tasks, setTasks] = useState<IMyForm[]>([]);
-    const [userName, setUserName] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const { register, handleSubmit, formState: { errors, isValid }, reset, setError } = useForm<IMyForm>({ 
-        mode: "onBlur",
+    const { isAuth, setIsAuth } = useContext(AuthContext);
+    const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm<IMyForm>({
+      mode: "onBlur",
     });
-
-    const saveElement: SubmitHandler<IMyForm> = (data) => { 
-        setTasks((prev) => [...prev, data]);
-        reset();
+  
+    const saveElement: SubmitHandler<IMyForm> = (data) => {
+      setTasks((prev) => [...prev, data]);
+      reset();
     };
-
-    // const checkAccount = async () => {
-    //     try {
-    //         const apiUrl = "http://0.0.0.0:8000";
-    //         const tokenEndpoint = "/swagger/auth/token";
-    //         const url = `${apiUrl}${tokenEndpoint}`;
-    //         const response = await axios.post(url, {
-    //             userName,
-    //             password,
-                
-    //         });
-    //         console.log(response.data);
-    //         const data: IMyForm = response.data;
-    //         if (data.token) {
-    //             localStorage.setItem('accessToken', data.token);
-    //             window.location.href = '/main-page'; // Редирект на главную страницу
-    //         } else {
-    //             setError('auth', {
-    //                 type: 'manual',
-    //                 message: 'Пользователь не существует',
-    //             }); // Отобразить ошибку на форме
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
-    return ( 
-        <>
-            <FormStyle>
-                <h1>
-                    Заполните форму
-                </h1>
-                <form onSubmit={handleSubmit(saveElement)} className="form__style" > 
-                    <input 
-                        type="name"
-                        className="input__style"
-                        placeholder="Имя"
-                        onChange={(e)=>setUserName(e.target.value)}
-                    /> 
-                    <div>{errors.name?.message}</div> 
-                    <input  
-                        type="pass"
-                        className="input__style"
-                        placeholder="Пароль"
-                        onChange={(e)=> setPassword(e.target.value)}
-                    /> 
-                    <div>{errors.pass?.message}</div> 
-                    <button type="submit" disabled={!isValid} className="button__style" >
-                        Сохранить
-                    </button> 
-                    { 
-                        tasks.map((task, index) => 
-                            <p key={index}> 
-                                Вывод : {task.name} - {task.pass} 
-                            </p> 
-                        ) 
-                    } 
-                </form> 
-            </FormStyle>
-        </>
-    ); 
-};
-
-export default Contact;
+  
+    const checkAccount: SubmitHandler<IMyForm> = async (data) => {
+      try {
+        const url = 'http://0.0.0.0:8000/auth/token/';
+        const { name, pass } = data;
+        const response = await axios.post(url, {
+          userName: name,
+          password: pass,
+        });
+        console.log(response.data);
+        const responseData: IMyForm = response.data;
+        if (responseData.token) {
+          localStorage.setItem('accessToken', responseData.token);
+          setIsAuth(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    const getUsers = async () => {
+      try {
+        const response = await axios.get('http://0.0.0.0:8000/users/');
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    useEffect(() => {
+      if (isAuth) {
+        getUsers();
+      }
+    }, [isAuth]);
+  
+    return (
+      <>
+        <FormStyle onSubmit={handleSubmit(checkAccount)}>
+          <h1>Заполните форму</h1>
+          <form className="form__style">
+            <input
+              type="name"
+              className="input__style"
+              placeholder="Имя"
+              {...register('name')}
+            />
+            <div>{errors.name?.message}</div>
+            <input
+              type="pass"
+              className="input__style"
+              placeholder="Пароль"
+              {...register('pass')}
+            />
+            <div>{errors.pass?.message}</div>
+            <button type="submit" disabled={!isValid} className="button__style">
+              Сохранить
+            </button>
+          </form>
+          {tasks.map((task, index) => (
+            <p key={index}>Вывод : {task.name} - {task.pass}</p>
+          ))}
+        </FormStyle>
+      </>
+    );
+  };
+  
+  export default Contact;

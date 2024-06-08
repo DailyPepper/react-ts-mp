@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "../../styles/style.css";
-import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, Image } from "@react-pdf/renderer";
+import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, Image, Font } from "@react-pdf/renderer";
 import { PDFViewer } from "@react-pdf/renderer";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
+import path from "path";
 
 const FormStyle = styled.form`
   display: flex;
