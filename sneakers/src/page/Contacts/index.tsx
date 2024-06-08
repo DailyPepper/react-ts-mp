@@ -1,6 +1,8 @@
-import { useState } from "react";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
+import { AuthContext } from "../../components/Navbar";
 
 const FormStyle = styled.div`
     padding: 20px 50px 50px 20px;
@@ -23,7 +25,9 @@ const FormStyle = styled.div`
         color: white;
         border-radius: 5px;
         font-size: 15px;
-    }::placeholder{
+        outline: none;
+    }
+    ::placeholder{
         color: white;
         font-size: 15px;
     }
@@ -41,103 +45,90 @@ const FormStyle = styled.div`
         transition: background-color 0.5s;        
         background-color: #ffa600;
     }
-    
-`
+`;
 
-interface IMyForm { 
+interface IMyForm {
+    token: any;
+    exists: boolean; 
     name: string; 
-    age: number; 
-    number: number;
-  } 
-   
-   
-  export const Contact = () => { 
-    const [tasks, setTasks] = useState<IMyForm[]>([]) 
-    const saveElement: SubmitHandler<IMyForm> = data => { 
-      // здесь мы передаём новый массив, который содержит все старые элементы и новый 
-      // ...prev - мы получаем все элементы текущего стэйте (с помощью spread оператора) 
-          setTasks((prev) => [...prev, data]) 
-          reset(); 
-      } 
-    const { 
-      register, // метод для регистрации вашего инпута, для дальнейшей работы с ним 
-      handleSubmit, // метод для получения данных формы, если валидация прошла успешна 
-      formState: {errors, isValid}, // errors - список ошибок валидации для всех полей формы 
-      reset // метод для очистки полей формы 
-    } = useForm<IMyForm>({ 
-        mode: "onBlur", // парметр onBlur - отвечает за запуск валидации при не активном состоянии поля 
-    }) 
+    pass: string; 
+} 
 
-    return ( 
-        <>
-            <FormStyle>
-                <h1>
-                    Заполните форму
-                </h1>
-                <form onSubmit={handleSubmit(saveElement)} className="form__style"> 
-                    <input 
-                        className="input__style"
-                        placeholder=" Имя"
-                        {...register('name', { 
-                                required: "Поле обязательно для заполнения", 
-                                minLength: { 
-                                    value: 2, 
-                                    message: "Нужно больше символов Данил, нужно более 5 символов" 
-                                },
-                                maxLength: {
-                                    value: 15,
-                                    message: "Много текста"
-                                } 
-                            } 
-                        )} 
-                    /> 
-                    <div>{errors.name?.message}</div> 
-                    <input  
-                        className="input__style"
-                        placeholder=" Возраст"
-                        {...register('age', { 
-                                required: "Поле обязательно для заполнения", 
-                                minLength: { 
-                                    value: 1, 
-                                    message: "Нужно больше символов Данил, нужно более 10 символов" 
-                                },
-                                maxLength: {
-                                    value: 3,
-                                    message: "Много текста"
-                                } 
-                            } 
-                        )} 
-                    /> 
-                    <div>{errors.age?.message}</div> 
-                    <input  
-                        className="input__style"
-                        placeholder=" Номер телефона"
-                        {...register('number', { 
-                                required: "Поле обязательно для заполнения", 
-                                minLength: { 
-                                    value: 5, 
-                                    message: "Нужно больше символов Данил, нужно более 10 символов" 
-                                },
-                                maxLength: {
-                                    value: 20,
-                                    message: "Много текста"
-                                } 
-                            } 
-                        )} 
-                    /> 
-                    <div>{errors.age?.message}</div> 
-                    <button type="submit" disabled={!isValid} className="button__style">Сохранить</button> 
-                    { 
-                        tasks.map((task) => 
-                            <p> 
-                                Вывод : {task.name} - {task.age} - {task.number}
-                            </p> 
-                        ) 
-                    } 
-                </form> 
-            </FormStyle>
-        </>
-    ); 
+const Contact = () => {
+    const [tasks, setTasks] = useState<IMyForm[]>([]);
+    const { isAuth, setIsAuth } = useContext(AuthContext);
+    const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm<IMyForm>({
+      mode: "onBlur",
+    });
+  
+    const saveElement: SubmitHandler<IMyForm> = (data) => {
+      setTasks((prev) => [...prev, data]);
+      reset();
+    };
+  
+    const checkAccount: SubmitHandler<IMyForm> = async (data) => {
+      try {
+        const url = 'http://0.0.0.0:8000/auth/token/';
+        const { name, pass } = data;
+        const response = await axios.post(url, {
+          userName: name,
+          password: pass,
+        });
+        console.log(response.data);
+        const responseData: IMyForm = response.data;
+        if (responseData.token) {
+          localStorage.setItem('accessToken', responseData.token);
+          setIsAuth(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    const getUsers = async () => {
+      try {
+        const response = await axios.get('http://0.0.0.0:8000/users/');
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    useEffect(() => {
+      if (isAuth) {
+        getUsers();
+      }
+    }, [isAuth]);
+  
+    return (
+      <>
+        <FormStyle onSubmit={handleSubmit(checkAccount)}>
+          <h1>Заполните форму</h1>
+          <form className="form__style">
+            <input
+              type="name"
+              className="input__style"
+              placeholder="Имя"
+              {...register('name')}
+            />
+            <div>{errors.name?.message}</div>
+            <input
+              type="pass"
+              className="input__style"
+              placeholder="Пароль"
+              {...register('pass')}
+            />
+            <div>{errors.pass?.message}</div>
+            <button type="submit" disabled={!isValid} className="button__style">
+              Сохранить
+            </button>
+          </form>
+          {tasks.map((task, index) => (
+            <p key={index}>Вывод : {task.name} - {task.pass}</p>
+          ))}
+        </FormStyle>
+      </>
+    );
   };
- 
-export default Contact;
+  
+  export default Contact;

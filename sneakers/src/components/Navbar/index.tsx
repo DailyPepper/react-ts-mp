@@ -13,15 +13,28 @@ interface StyleProps {
 }
 
 const NavbarWrapper = styled.div<StyleProps>`
-  border: 1.5px solid #d49415;
-  height: ${({ height }) => (height ? height : "300px")};
   display: flex;
-  gap: 60px;
-  justify-content: space-around;
-  padding-top: 30px;
-  margin: 20px 10px 10px 10px;
+  flex-direction: column;
+  align-items: center; 
+  padding: 30px 10px 10px 10px;
   border-radius: 25px;
+  background-color: transparent; 
+  border: none; 
+  gap: 20px;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+    align-items: baseline;
+    height: 65px;
+    border: 1.5px solid #d49415;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    max-width: 1200px; 
+    width: 90%; 
+    margin: 20px auto; 
+  }
 `;
+
 
 const SwitchThemeStyled = styled.button`
   width: 100px;
@@ -69,9 +82,6 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // const toggleAuth = () => {
-  //   // setIsAuthenticated(prevState => !prevState);
-  // };
   const login = () => {
     setIsAuthenticated(true);
   };
